@@ -13,6 +13,7 @@ int main(int argc, char **argv) {
   screen s;
   struct matrix * edges;
   struct matrix * transform;
+  struct matrix * test;
 
   clear_screen(s);
 
@@ -20,7 +21,9 @@ int main(int argc, char **argv) {
   transform = new_matrix(4, 4);
 
   printf("transform matrix e.g.\n");
-  print_matrix(make_translate(3, 4, 5));
+  test = make_translate(3, 4, 5);
+  print_matrix(test);
+  free_matrix(test);
 
   /*
   if ( argc == 2 )
