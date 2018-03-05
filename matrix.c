@@ -53,7 +53,7 @@ angle of rotation and X as the axis of rotation.
 ====================*/
 struct matrix * make_rotX(double theta) {
   struct matrix * retMat;
-  double theta_rad = theta * M_PI / 180;
+  double theta_rad = theta * M_PI / 180; // convert to radians
   
   retMat = new_matrix(4, 4);
   ident(retMat);
@@ -74,7 +74,7 @@ angle of rotation and Y as the axis of rotation.
 ====================*/
 struct matrix * make_rotY(double theta) {
   struct matrix * retMat;
-  double theta_rad = theta * M_PI / 180;
+  double theta_rad = theta * M_PI / 180; // convert to radians
   
   retMat = new_matrix(4, 4);
   ident(retMat);
@@ -95,7 +95,7 @@ angle of rotation and Z as the axis of rotation.
 ====================*/
 struct matrix * make_rotZ(double theta) {
   struct matrix * retMat;
-  double theta_rad = theta * M_PI / 180;
+  double theta_rad = theta * M_PI / 180; // convert to radians
   
   retMat = new_matrix(4, 4);
   ident(retMat);

@@ -69,6 +69,26 @@ void parse_file ( char * filename,
   while ( fgets(line, 255, f) != NULL ) {
     line[strlen(line)-1]='\0';
     printf(":%s:\n",line);
+
+    if (strncmp(line, "line", 4) == 0) {
+      int args[6];
+      short numinputs;
+
+      /*
+      fgets(line, 255, f);
+      line[strlen(line)-1]='\0';
+      */
+      numinputs = fscanf(f, "%d %d %d %d %d %d", args, args+1, args+2, args+3, args+4, args+5);
+      if (numinputs != 6) {
+	printf("Error: Invalid arguments for line\n");
+	return;
+      }
+      add_edge(edges, *args, args[1], args[2], args[3], args[4], args[5]);
+    }
+    printf("\ntransform:\n");
+    print_matrix(transform);
+    printf("\nedges:\n");
+    print_matrix(edges);
   }
-}
   
+}
