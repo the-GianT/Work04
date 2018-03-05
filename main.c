@@ -20,8 +20,19 @@ int main(int argc, char **argv) {
   edges = new_matrix(4, 4);
   transform = new_matrix(4, 4);
 
-  printf("transform matrix e.g.\n");
+  printf("\ntransform matrix e.g.\n");
   test = make_translate(3, 4, 5);
+  print_matrix(test);
+  free_matrix(test);
+
+  printf("\nscale matrix e.g.\n");
+  test = make_scale(3, 4, 5);
+  print_matrix(test);
+  free_matrix(test);
+
+  printf("\nrotation matrix (x-axis) e.g.\n");
+  test = make_rotX(90);
+  printf("sin(90 degrees) == 1\ncos(90 degrees) == 0\n");
   print_matrix(test);
   free_matrix(test);
 
