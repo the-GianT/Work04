@@ -133,12 +133,19 @@ void parse_file ( char * filename,
 	rot_m = make_rotY(theta);
       else if (axis == 'z')
 	rot_m = make_rotZ(theta);
-      else
+      else {
 	printf("Error: Invalid axis argument for rotate; must be x, y, or z\n");
+	return;
+      }
       
       matrix_mult(rot_m, transform);
       free_matrix(rot_m);
       
+    } else if (strncmp(line, "apply", 5) == 0) {
+      matrix_mult(transform, edges);
+      
+    } else if (strncmp(line, "display", 7) == 0) {
+      // draw_lines(edges, s, c);
     }
     printf("\ntransform:\n");
     print_matrix(transform);
