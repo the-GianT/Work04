@@ -36,6 +36,18 @@ int main(int argc, char **argv) {
   print_matrix(test);
   free_matrix(test);
 
+  printf("\nrotation matrix (y-axis) e.g.\n");
+  test = make_rotY(90);
+  printf("sin(90 degrees) == 1\ncos(90 degrees) == 0\n");
+  print_matrix(test);
+  free_matrix(test);
+
+  printf("\nrotation matrix (z-axis) e.g.\n");
+  test = make_rotZ(90);
+  printf("sin(90 degrees) == 1\ncos(90 degrees) == 0\n");
+  print_matrix(test);
+  free_matrix(test);
+
   /*
   if ( argc == 2 )
     parse_file( argv[1], transform, edges, s );
