@@ -91,8 +91,54 @@ void parse_file ( char * filename,
     } else if (strncmp(line, "scale", 5) == 0) {
       int args[3];
       int numinputs;
+      struct matrix * scale_m;
 
-      numinputs = fscanf(f, 
+      numinputs = fscanf(f, "%d %d %d", args, args +1, args + 2);
+      if (numinputs != 3) {
+	printf("Error: Invalid arguments for scale\n");
+	return;
+      }
+      scale_m = make_scale(*args, args[1], args[2]);
+      matrix_mult(scale_m, transform);
+      free_matrix(scale_m);
+      
+    } else if (strncmp(line, "translate", 9) == 0) {
+      int args[3];
+      int numinputs;
+      struct matrix * trans_m;
+
+      numinputs = fscanf(f, "%d %d %d", args, args +1, args + 2);
+      if (numinputs != 3) {
+	printf("Error: Invalid arguments for translate\n");
+	return;
+      }
+      trans_m = make_translate(*args, args[1], args[2]);
+      matrix_mult(trans_m, transform);
+      free_matrix(trans_m);
+      
+    } else if (strncmp(line, "rotate", 6) == 0) {
+      char axis;
+      double theta;
+      int numinputs;
+      struct matrix * rot_m;
+
+      numinputs = fscanf(f, "%c %lf", &axis, &theta);
+      if (numinputs != 2) {
+	printf("Error: Invalid arguments for rotate\n");
+	return;
+      }
+      if (axis == 'x')
+	rot_m = make_rotX(theta);
+      else if (axis == 'y')
+	rot_m = make_rotY(theta);
+      else if (axis == 'z')
+	rot_m = make_rotZ(theta);
+      else
+	printf("Error: Invalid axis argument for rotate; must be x, y, or z\n");
+      
+      matrix_mult(rot_m, transform);
+      free_matrix(rot_m);
+      
     }
     printf("\ntransform:\n");
     print_matrix(transform);
