@@ -72,7 +72,7 @@ void parse_file ( char * filename,
 
     if (strncmp(line, "line", 4) == 0) {
       int args[6];
-      short numinputs;
+      int numinputs;
 
       /*
       fgets(line, 255, f);
@@ -84,6 +84,15 @@ void parse_file ( char * filename,
 	return;
       }
       add_edge(edges, *args, args[1], args[2], args[3], args[4], args[5]);
+      
+    } else if (strncmp(line, "ident", 5) == 0) {
+      ident(transform);
+      
+    } else if (strncmp(line, "scale", 5) == 0) {
+      int args[3];
+      int numinputs;
+
+      numinputs = fscanf(f, 
     }
     printf("\ntransform:\n");
     print_matrix(transform);
