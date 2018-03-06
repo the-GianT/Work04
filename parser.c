@@ -188,8 +188,11 @@ void parse_file ( char * filename,
       save_extension(s, line);
       clear_screen(s);
       
-    } else if (strncmp(line, "quit", 4) == 0)
+    } else if (strncmp(line, "quit", 4) == 0) {
       return;
+
+    } else
+      printf("%s: command not found\n", line);
   } // end while loop
   
 } // end parse_file function
