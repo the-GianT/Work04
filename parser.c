@@ -28,7 +28,7 @@ The file follows the following format:
 	 scale: create a scale matrix, 
 	    then multiply the transform matrix by the scale matrix - 
 	    takes 3 arguments (sx, sy, sz)
-	 translate: create a translation matrix, 
+	 move: create a translation matrix, 
 	    then multiply the transform matrix by the translation matrix - 
 	    takes 3 arguments (tx, ty, tz)
 	 rotate: create an rotation matrix,
@@ -74,15 +74,16 @@ void parse_file ( char * filename,
       int args[6];
       int numinputs;
 
-      /*
+      /* Read arguments: */
       fgets(line, 255, f);
       line[strlen(line)-1]='\0';
-      */
-      numinputs = fscanf(f, "%d %d %d %d %d %d", args, args+1, args+2, args+3, args+4, args+5);
+      printf(":%s:\n", line);
+      numinputs = sscanf(line, "%d %d %d %d %d %d", args, args+1, args+2, args+3, args+4, args+5);
       if (numinputs != 6) {
 	printf("Error: Invalid arguments for line\n");
 	return;
       }
+      
       add_edge(edges, *args, args[1], args[2], args[3], args[4], args[5]);
       
     } else if (strncmp(line, "ident", 5) == 0) {
@@ -93,25 +94,35 @@ void parse_file ( char * filename,
       int numinputs;
       struct matrix * scale_m;
 
-      numinputs = fscanf(f, "%d %d %d", args, args +1, args + 2);
+      /* Read arguments: */
+      fgets(line, 255, f);
+      line[strlen(line)-1]='\0';
+      printf(":%s:\n", line);
+      numinputs = sscanf(line, "%d %d %d", args, args +1, args + 2);
       if (numinputs != 3) {
 	printf("Error: Invalid arguments for scale\n");
 	return;
       }
+      
       scale_m = make_scale(*args, args[1], args[2]);
       matrix_mult(scale_m, transform);
       free_matrix(scale_m);
       
-    } else if (strncmp(line, "translate", 9) == 0) {
+    } else if (strncmp(line, "move", 4) == 0) {
       int args[3];
       int numinputs;
       struct matrix * trans_m;
 
-      numinputs = fscanf(f, "%d %d %d", args, args +1, args + 2);
+      /* Read arguments: */
+      fgets(line, 255, f);
+      line[strlen(line)-1]='\0';
+      printf(":%s:\n", line);
+      numinputs = sscanf(line, "%d %d %d", args, args +1, args + 2);
       if (numinputs != 3) {
-	printf("Error: Invalid arguments for translate\n");
+	printf("Error: Invalid arguments for move\n");
 	return;
       }
+      
       trans_m = make_translate(*args, args[1], args[2]);
       matrix_mult(trans_m, transform);
       free_matrix(trans_m);
@@ -122,11 +133,16 @@ void parse_file ( char * filename,
       int numinputs;
       struct matrix * rot_m;
 
-      numinputs = fscanf(f, "%c %lf", &axis, &theta);
+      /* Read arguments: */
+      fgets(line, 255, f);
+      line[strlen(line)-1]='\0';
+      printf(":%s:\n", line);
+      numinputs = sscanf(line, "%c %lf", &axis, &theta);
       if (numinputs != 2) {
 	printf("Error: Invalid arguments for rotate\n");
 	return;
       }
+      
       if (axis == 'x')
 	rot_m = make_rotX(theta);
       else if (axis == 'y')
@@ -145,12 +161,35 @@ void parse_file ( char * filename,
       matrix_mult(transform, edges);
       
     } else if (strncmp(line, "display", 7) == 0) {
-      // draw_lines(edges, s, c);
-    }
-    printf("\ntransform:\n");
-    print_matrix(transform);
-    printf("\nedges:\n");
-    print_matrix(edges);
-  }
+      color c;
+
+      c.red = MAX_COLOR;
+      c.green = MAX_COLOR;
+      c.blue = MAX_COLOR;
+      
+      draw_lines(edges, s, c);
+      display(s);
+      clear_screen(s);
+      
+    } else if (strncmp(line, "save", 4) == 0) {
+      color c;
+
+      c.red = MAX_COLOR;
+      c.green = MAX_COLOR;
+      c.blue = MAX_COLOR;
+      
+      draw_lines(edges, s, c);
+
+      /* Read file name argument for save: */
+      fgets(line, 255, f);
+      line[strlen(line)-1]='\0';
+      printf(":%s:\n", line);
+      
+      save_extension(s, line);
+      clear_screen(s);
+      
+    } else if (strncmp(line, "quit", 4) == 0)
+      return;
+  } // end while loop
   
-}
+} // end parse_file function
